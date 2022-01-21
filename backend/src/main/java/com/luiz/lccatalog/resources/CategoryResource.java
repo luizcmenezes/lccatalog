@@ -1,5 +1,6 @@
 package com.luiz.lccatalog.resources;
 
+import com.luiz.lccatalog.dto.CategoryDTO;
 import com.luiz.lccatalog.entities.Category;
 import com.luiz.lccatalog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class CategoryResource {
     private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll(){
+    public ResponseEntity<List<CategoryDTO>> findAll(){
         return ResponseEntity.ok().body(service.findAll());
     }
 }
