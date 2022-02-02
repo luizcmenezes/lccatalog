@@ -1,7 +1,10 @@
 package com.luiz.lccatalog.services;
 
+import com.luiz.lccatalog.dto.CategoryDTO;
 import com.luiz.lccatalog.dto.ProductDTO;
+import com.luiz.lccatalog.entities.Category;
 import com.luiz.lccatalog.entities.Product;
+import com.luiz.lccatalog.repositories.CategoryRepository;
 import com.luiz.lccatalog.repositories.ProductRepository;
 import com.luiz.lccatalog.services.execeptions.DatabaseException;
 import com.luiz.lccatalog.services.execeptions.ResourceNotFoundException;
@@ -21,6 +24,9 @@ public class ProductService {
     @Autowired
     private ProductRepository repo;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
         return repo.findAll(pageRequest).map(prod -> new ProductDTO(prod));
@@ -35,7 +41,7 @@ public class ProductService {
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product obj = new Product();
-//        obj.setName(dto.getName());
+        copyDtoToEntity(dto, obj);
         obj = repo.save(obj);
         return new ProductDTO(obj);
     }
@@ -44,7 +50,7 @@ public class ProductService {
     public ProductDTO update(Long id, ProductDTO dto) {
         try {
             Product obj = repo.getById(id);
-//            obj.setName(dto.getName());
+            copyDtoToEntity(dto, obj);
             obj = repo.save(obj);
             return new ProductDTO(obj);
         } catch (EntityNotFoundException e){
@@ -59,6 +65,20 @@ public class ProductService {
             throw new ResourceNotFoundException("Id not found " + id);
         } catch (DataIntegrityViolationException e){
             throw new DatabaseException("Integrity violation");
+        }
+    }
+
+    private void copyDtoToEntity(ProductDTO dto, Product obj) {
+        obj.setName(dto.getName());
+        obj.setDescription(dto.getDescription());
+        obj.setDate(dto.getDate());
+        obj.setImgUrl(dto.getImgUrl());
+        obj.setPrice(dto.getPrice());
+
+        obj.getCategories().clear();
+        for (CategoryDTO catDto : dto.getCategories()){
+            Category category = categoryRepository.getById(catDto.getId());
+            obj.getCategories().add(category);
         }
     }
 }
