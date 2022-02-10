@@ -1,7 +1,7 @@
 package com.luiz.lccatalog.resources.execptions;
 
-import com.luiz.lccatalog.services.execeptions.DatabaseException;
-import com.luiz.lccatalog.services.execeptions.ResourceNotFoundException;
+import com.luiz.lccatalog.services.execptions.DatabaseException;
+import com.luiz.lccatalog.services.execptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

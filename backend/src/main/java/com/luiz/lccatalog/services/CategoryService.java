@@ -3,13 +3,13 @@ package com.luiz.lccatalog.services;
 import com.luiz.lccatalog.dto.CategoryDTO;
 import com.luiz.lccatalog.entities.Category;
 import com.luiz.lccatalog.repositories.CategoryRepository;
-import com.luiz.lccatalog.services.execeptions.DatabaseException;
-import com.luiz.lccatalog.services.execeptions.ResourceNotFoundException;
+import com.luiz.lccatalog.services.execptions.DatabaseException;
+import com.luiz.lccatalog.services.execptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +22,8 @@ public class CategoryService {
     private CategoryRepository repo;
 
     @Transactional(readOnly = true)
-    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
-        return repo.findAll(pageRequest).map(x -> new CategoryDTO(x));
+    public Page<CategoryDTO> findAllPaged(Pageable pageable) {
+        return repo.findAll(pageable).map(x -> new CategoryDTO(x));
     }
 
     @Transactional(readOnly = true)

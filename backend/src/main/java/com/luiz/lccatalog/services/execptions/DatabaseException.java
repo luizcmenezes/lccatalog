@@ -1,4 +1,4 @@
-package com.luiz.lccatalog.services.execeptions;
+package com.luiz.lccatalog.services.execptions;
 
 public class DatabaseException extends RuntimeException {
     private static final long serialVersionUID = 1L;
